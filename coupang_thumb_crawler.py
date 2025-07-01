@@ -9,6 +9,7 @@ from tqdm import tqdm
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import glob
 
 # 저장 폴더
 SAVE_DIR = 'thumbnails'
@@ -87,12 +88,14 @@ CRAWL_IMG_DIR = 'crawl_img'
 os.makedirs(CRAWL_IMG_DIR, exist_ok=True)
 
 def download_images(urls, save_dir=CRAWL_IMG_DIR):
+    # 폴더 내 기존 파일 개수 파악 (crawl_img_*.jpg, crawl_img_*)
+    existing_files = glob.glob(os.path.join(save_dir, 'crawl_img_*'))
+    start_idx = len(existing_files) + 1
     for idx, url in enumerate(tqdm(urls, desc='이미지 다운로드')):
         try:
             resp = requests.get(url, stream=True, timeout=10)
             if resp.status_code == 200:
-                ext = url.split('.')[-1].split('?')[0]
-                fname = f'thumb_{idx}.{ext}'
+                fname = f'crawl_img_{start_idx + idx}.jpg'
                 fpath = os.path.join(save_dir, fname)
                 with open(fpath, 'wb') as f:
                     for chunk in resp.iter_content(1024):
@@ -112,6 +115,20 @@ if __name__ == '__main__':
     thumb_urls = get_thumbnail_urls_bs4(real_url, max_imgs=3)
     if not thumb_urls:
         print('썸네일 이미지를 찾을 수 없습니다.')
+        # empty_thumbnail 넘버링
+        empty_files = glob.glob(os.path.join(CRAWL_IMG_DIR, 'empty_thumbnail_*.html'))
+        empty_idx = len(empty_files) + 1
+        empty_path = os.path.join(CRAWL_IMG_DIR, f'empty_thumbnail_{empty_idx}.html')
+        # 마지막 HTML 저장본을 복사
+        src_html = os.path.join(CRAWL_IMG_DIR, 'last_coupang.html')
+        if os.path.exists(src_html):
+            with open(src_html, 'r', encoding='utf-8') as src, open(empty_path, 'w', encoding='utf-8') as dst:
+                dst.write(src.read())
+            print(f'empty 썸네일 HTML 저장: {empty_path}')
+        else:
+            with open(empty_path, 'w', encoding='utf-8') as dst:
+                dst.write('')
+            print(f'empty 썸네일 HTML(빈 파일) 저장: {empty_path}')
         exit(1)
     print('썸네일 이미지 URL 리스트:')
     for u in thumb_urls:
