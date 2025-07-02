@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>쿠팡 썸네일 퍼가개</title>
+  <style>
+    body {
+      /* background: #444; */
+      min-width: 320px;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #fff;
+      border-radius: 4px;
+      /* box-shadow: 0 6px 24px rgba(0,0,0,0.10); */
+      padding: 18px 12px;
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+    .title { font-size: 1.05rem; font-weight: bold; color: #222; }
+    .beta { background: #ffeaea; color: #ff5555; font-size: 0.7rem; font-weight: bold; border-radius: 4px; padding: 1px 6px; margin-left: 6px;}
+    .subtitle { color: #666; font-size: 0.92rem; margin-bottom: 10px;}
+    .author-box { background: #eaf6ff; height: 48px; border-radius: 6px; padding: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;  align-items: center;}
+    .author-info { color: #222; font-size: 0.85rem; }
+    /* .feedback-btn { background: #1da1f2; color: #fff; border: none; border-radius: 4px; padding: 5px 10px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 0.85rem;} */
+    .input-area { width: 100%; height: 200px; border: 1px solid #ddd; border-radius: 4px; padding: 8px; font-size: 0.9rem; margin-bottom: 12px; background: #f5f6fa; color: #222; box-sizing: border-box; resize: none;}
+    .download-btn { width: 100%; padding: 9px 0; background: #1da1f2; color: #fff; border: none; border-radius: 4px; font-size: 0.9rem; font-weight: 500; cursor: pointer; box-sizing: border-box;}
+    .download-btn:hover { background: #0d8ddb; }
+    #result { min-height: 18px; font-size: 0.9rem; color: #333; margin-top: 7px;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div>
+      <div style="display:flex;align-items:center;margin-bottom:5px;">
+        <span class="title">쿠팡 썸네일 퍼가개</span>
+        <span class="beta">beta</span>
+      </div>
+      <div class="subtitle">Extract thumnail from Coupang Links</div>
+      <div class="author-box">
+        <div class="author-info">
+          <div style="font-weight:500;">Made by Team Signaling</div>
+          <!-- <div style="font-size:0.85rem;">농협 302 3371 0677 81</div> -->
+        </div>
+        <!-- <a href="https://open.kakao.com/o/some-feedback-link" target="_blank" class="feedback-btn">의견 보내기</a> -->
+      </div>
+      <textarea id="columnData" class="input-area" placeholder="여기에 링크를 복사 붙여넣기 해주세요"></textarea>
+    </div>
+    <div>
+      <button id="downloadBtn" class="download-btn">썸네일 다운로드</button>
+      <div id="result"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 
