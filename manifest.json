@@ -4,8 +4,6 @@
   "version": "25.07.02",
   "description": "쿠팡 링크에서 썸네일을 추출해줍니다.",
   "permissions": [
-    "activeTab",
-    "storage",
     "tabs",
     "downloads"
   ],
