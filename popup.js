@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     downloadBtn.disabled = true;
     downloadBtn.textContent = '⏳ 처리 중...';
-    showResult('🔍 썸네일을 조회하고 있습니다...', 'info');
+    showResult('', 'info');
 
     try {
       // background.js에 메시지 전송 (action: 'downloadThumbnails')
@@ -39,15 +39,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // 진행상황 메시지 수신 (옵션)
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.type === 'progress') {
-      showResult(message.message, 'info');
-    }
-  });
-
   function showResult(message, type = 'info') {
     resultDiv.textContent = message;
     resultDiv.style.color = (type === 'error') ? 'red' : (type === 'success' ? 'green' : '#333');
+  }
+
+  // 커스텀 라디오 버튼 로직
+  let fileType = 'origin';
+  const originOption = document.getElementById('originOption');
+  const cropOption = document.getElementById('cropOption');
+  const originRadio = document.getElementById('originRadio');
+  const cropRadio = document.getElementById('cropRadio');
+
+  originOption.addEventListener('click', function() {
+    fileType = 'origin';
+    originRadio.classList.add('selected');
+    cropRadio.classList.remove('selected');
+  });
+  cropOption.addEventListener('click', function() {
+    fileType = 'crop';
+    cropRadio.classList.add('selected');
+    originRadio.classList.remove('selected');
+  });
+
+  // 닫기 버튼 이벤트
+  const closeBtn = document.getElementById('closeBtn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      window.close();
+    });
   }
 }); 
