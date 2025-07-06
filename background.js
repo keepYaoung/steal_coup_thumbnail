@@ -1,6 +1,6 @@
 // Google Sheets API 관련 변수
-let accessToken = null;
-let currentTab = null;
+// let accessToken = null;
+// let currentTab = null;
 
 // 메시지 리스너 등록
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   // downloadThumbnails 액션 추가
   if (request.action === 'downloadThumbnails') {
-    handleDownloadThumbnails(request.links, sendResponse);
+    handleDownloadThumbnails(request.links, request.fileType, sendResponse);
     return true;
   }
 });
@@ -86,26 +86,19 @@ async function readSpreadsheetLinks(spreadsheetId, sheetName, linkColumn) {
 // 썸네일 추출 함수
 async function extractThumbnailFromUrl(url) {
   return new Promise((resolve, reject) => {
-    // 새 탭에서 쿠팡 페이지 열기
     chrome.tabs.create({ url: url, active: false }, (tab) => {
-      currentTab = tab;
-      
       // 페이지 로딩 완료 대기
       chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo, tab) {
         if (tabId === tab.id && changeInfo.status === 'complete') {
           chrome.tabs.onUpdated.removeListener(listener);
-          
-          // Content script에 메시지 전송하여 썸네일 추출
           chrome.tabs.sendMessage(tab.id, { action: 'extractThumbnail' }, (response) => {
             if (chrome.runtime.lastError) {
               chrome.tabs.remove(tab.id);
               reject(new Error(chrome.runtime.lastError.message));
               return;
             }
-            
             const thumbnailUrl = response ? response.thumbnailUrl : null;
             chrome.tabs.remove(tab.id);
-            
             if (thumbnailUrl) {
               resolve(thumbnailUrl);
             } else {
@@ -133,14 +126,32 @@ function sendProgress(message, percent) {
   });
 }
 
-// downloadThumbnails 핸들러 추가
-async function handleDownloadThumbnails(links, sendResponse) {
+// 200x200px 중앙 크롭 함수
+async function cropImageToSquare200(imageUrl) {
+  const blob = await fetch(imageUrl).then(r => r.blob());
+  const img = await createImageBitmap(blob);
+  const canvas = new OffscreenCanvas(200, 200);
+  const ctx = canvas.getContext('2d');
+  let sx = 0, sy = 0, sw = img.width, sh = img.height;
+  if (img.width > img.height) {
+    sx = (img.width - img.height) / 2;
+    sw = img.height;
+  } else if (img.height > img.width) {
+    sy = (img.height - img.width) / 2;
+    sh = img.width;
+  }
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, 200, 200);
+  const croppedBlob = await canvas.convertToBlob({ type: 'image/jpeg', quality: 0.92 });
+  return URL.createObjectURL(croppedBlob);
+}
+
+// downloadThumbnails 핸들러
+async function handleDownloadThumbnails(links, fileType, sendResponse) {
   try {
-    sendProgress(`🔗 ${links.length}개의 링크 처리 시작`, 10);
+    let fileIndex = 1;
     const results = [];
     for (let i = 0; i < links.length; i++) {
       const link = links[i];
-      sendProgress(`🖼️ ${i + 1}/${links.length} 썸네일 추출 중...`, 10 + (i / links.length) * 80);
       try {
         const thumbnailUrl = await extractThumbnailFromUrl(link);
         results.push({
@@ -148,13 +159,26 @@ async function handleDownloadThumbnails(links, sendResponse) {
           link: link,
           thumbnailUrl: thumbnailUrl
         });
-        // 썸네일 URL이 정상일 때 자동 다운로드
         if (thumbnailUrl && !thumbnailUrl.startsWith('ERROR')) {
-          chrome.downloads.download({
-            url: thumbnailUrl,
-            filename: `[ext]steal_coup_thumbnail/crawl_img_${i + 1}.jpg`,
-            saveAs: false
-          });
+          let filename = '';
+          if (fileType === 'crop') {
+            filename = `000 Extract Coupang thumnail/crawl_img_${fileIndex}_crop.jpg`;
+            fileIndex++;
+            const croppedUrl = await cropImageToSquare200(thumbnailUrl);
+            chrome.downloads.download({
+              url: croppedUrl,
+              filename: filename,
+              saveAs: false
+            });
+          } else {
+            filename = `000 Extract Coupang thumnail/crawl_img_${fileIndex}.jpg`;
+            fileIndex++;
+            chrome.downloads.download({
+              url: thumbnailUrl,
+              filename: filename,
+              saveAs: false
+            });
+          }
         }
       } catch (error) {
         results.push({
@@ -164,7 +188,6 @@ async function handleDownloadThumbnails(links, sendResponse) {
         });
       }
     }
-    sendProgress('✅ 썸네일 다운로드 완료!', 100);
     sendResponse({
       success: true,
       message: `${results.length}개의 썸네일을 다운로드했습니다.`,

@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // background.js에 메시지 전송 (action: 'downloadThumbnails')
       const response = await chrome.runtime.sendMessage({
         action: 'downloadThumbnails',
-        links: links
+        links: links,
+        fileType: fileType
       });
       if (response && response.success) {
         showResult('✅ 썸네일 다운로드가 완료되었습니다!', 'success');
@@ -57,9 +58,11 @@ document.addEventListener('DOMContentLoaded', function() {
     cropRadio.classList.remove('selected');
   });
   cropOption.addEventListener('click', function() {
-    fileType = 'crop';
-    cropRadio.classList.add('selected');
-    originRadio.classList.remove('selected');
+    alert('크롭 파일로 받기 기능은 현재 일시 중지되었습니다.');
+    // fileType은 origin만 유지
+    cropRadio.classList.remove('selected');
+    originRadio.classList.add('selected');
+    fileType = 'origin';
   });
 
   // 닫기 버튼 이벤트
