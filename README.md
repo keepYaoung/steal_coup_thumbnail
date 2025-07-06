@@ -2,13 +2,13 @@
 
 쿠팡 상품 링크가 들어있는 구글 스프레드시트의 **특정 열**을 복사해서 붙여넣으면,
 해당 열의 모든 쿠팡 링크에서 썸네일 이미지를 자동으로 추출하고,
-로컬 Download 폴더 내 `[ext]steal_coup_thumbnail` 폴더에 일괄 저장해주는 크롬 확장 프로그램입니다.
+로컬 Download 폴더 내 `000 Extract Coupang thumnail` 폴더에 일괄 저장해주는 크롬 확장 프로그램입니다.
 
 ---
 
 ## 주요 기능
 - 구글 시트에서 **쿠팡 링크가 있는 열 전체 복사** → 확장 프로그램에 붙여넣기 → 썸네일 일괄 다운로드
-- 썸네일 이미지는 `[ext]steal_coup_thumbnail/crawl_img_1.jpg`, `crawl_img_2.jpg` ... 형식으로 저장
+- 썸네일 이미지는 `000 Extract Coupang thumnail/crawl_img_1.jpg`, `crawl_img_2.jpg` ... 형식으로 저장
 - 간단하고 직관적인 카드형 UI
 - (선택) 제작자 정보 및 의견 보내기 안내
 
@@ -27,13 +27,13 @@
 2. 크롬 우측 상단 확장 프로그램 아이콘 클릭 → "쿠팡 썸네일 퍼가개" 실행
 3. 입력창에 복사한 열 데이터를 붙여넣기(Ctrl+V)
 4. "썸네일 다운로드" 버튼 클릭
-5. Download 폴더 내 `[ext]steal_coup_thumbnail` 폴더에 썸네일 이미지가 자동 저장됨
+5. Download 폴더 내 `000 Extract Coupang thumnail` 폴더에 썸네일 이미지가 자동 저장됨
 
 ---
 
 ## 다운로드 폴더 구조
 ```
-~/Downloads/[ext]steal_coup_thumbnail/
+~/Downloads/000 Extract Coupang thumnail/
   ├─ crawl_img_1.jpg
   ├─ crawl_img_2.jpg
   ├─ ...
