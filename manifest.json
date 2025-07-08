@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "쿠팡 썸네일 퍼가개 : Extract thumb from Coupang links ",
-  "version": "25.07.02",
+  "version": "25.07.03",
   "description": "쿠팡 링크에서 썸네일을 추출해줍니다.",
   "permissions": [
     "downloads"
