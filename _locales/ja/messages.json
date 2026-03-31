@@ -1,0 +1,17 @@
+{
+  "app_name": { "message": "クーパンサムネイル抽出ツール" },
+  "input_placeholder": { "message": "クーパンのリンクをここに貼り付けてください" },
+  "guide_title": { "message": "使い方" },
+  "guide_item1": { "message": "複数のクーパンリンクをまとめて貼り付けできます。" },
+  "guide_item2": { "message": "Downloadフォルダに日付別フォルダで保存されます。\n(例: 26-03-31-coupang-thumbnail)" },
+  "guide_item3": { "message": "コーヒーをおごってください ☕️\n3333344816991 카카오뱅크" },
+  "ai_btn_text": { "message": "AI 商品5アングル画像を生成" },
+  "download_btn": { "message": "サムネイルをダウンロード" },
+  "toast_ai": { "message": "準備中の機能です。リリース通知を受け取る →" },
+  "error_no_data": { "message": "❌ リンクデータを貼り付けてください。" },
+  "error_no_links": { "message": "❌ 有効なリンクがありません。" },
+  "success_download": { "message": "✅ サムネイルのダウンロードが完了しました！" },
+  "processing": { "message": "⏳ 処理中..." },
+  "error_prefix": { "message": "❌ エラー：" },
+  "error_unknown": { "message": "不明なエラー" }
+}

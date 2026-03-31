@@ -1,8 +1,13 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
 /* 전체 레이아웃 */
 .main-container {
-  width: 434px;
-  min-width: 434px;
-  max-width: 434px;
+  width: 100%;
+  min-width: 320px;
   padding: 16px;
   background: var(--color-white, white);
   overflow: hidden;
@@ -81,68 +86,6 @@
   display: block;
 }
 
-.radio-area {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.custom-radio-option {
-  align-self: stretch;
-  padding: 12px;
-  overflow: hidden;
-  border-radius: 8px;
-  outline: 1px var(--theme-border, #E2E8F0) solid;
-  outline-offset: -1px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  cursor: pointer;
-  transition: outline-color 0.2s;
-}
-.custom-radio-option:hover {
-  outline-color: #000000;
-}
-.custom-radio-label {
-  color: var(--theme-foreground, #020618);
-  font-size: 14px;
-  font-family: Inter, sans-serif;
-  font-weight: 500;
-  line-height: 20px;
-  word-wrap: break-word;
-}
-.custom-radio-btn-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.custom-radio-btn {
-  width: 16px;
-  height: 16px;
-  background: #fff;
-  border-radius: 9999px;
-  outline: 1px var(--theme-foreground, #020618) solid;
-  outline-offset: -1px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  transition: outline-color 0.2s;
-}
-.custom-radio-btn.selected {
-  background: #fff;
-  outline: 1.5px #000000 solid;
-}
-.custom-radio-btn.selected::after {
-  content: '';
-  display: block;
-  width: 10px;
-  height: 10px;
-  background: #000000;
-  border-radius: 9999px;
-  margin: auto;
-}
 .input-area-wrap{
     width: 100%;
     /* height: 100%; */
@@ -270,15 +213,6 @@
   background: #f5f6fa;
   color: #222;
   box-sizing: border-box;
-}
-
-.custom-radio-option#cropOption {
-  pointer-events: none;
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.custom-radio-option#cropOption:hover {
-  outline-color: initial;
 }
 
 /* AI 기능 버튼 */

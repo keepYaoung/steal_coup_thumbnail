@@ -1,0 +1,17 @@
+{
+  "app_name": { "message": "쿠팡 썸네일 퍼가개" },
+  "input_placeholder": { "message": "Copy & Paste the all links to here\n여기에 링크를 복사 및 붙여넣기 해주세요" },
+  "guide_title": { "message": "Guide" },
+  "guide_item1": { "message": "쿠팡 링크를 여러개 붙여 넣어도 됩니다." },
+  "guide_item2": { "message": "Download 폴더에 날짜별 폴더로 저장됩니다.\n(예: 26-03-31-coupang-thumbnail)" },
+  "guide_item3": { "message": "커피 사주실 분은 여기로 ☕️\n3333344816991 카카오뱅크" },
+  "ai_btn_text": { "message": "AI 이 상품 5각도 이미지 생성하기" },
+  "download_btn": { "message": "썸네일 다운받기" },
+  "toast_ai": { "message": "준비 중인 기능입니다. 출시 알림 받기 →" },
+  "error_no_data": { "message": "❌ 열 데이터를 붙여넣어 주세요." },
+  "error_no_links": { "message": "❌ 유효한 링크가 없습니다." },
+  "success_download": { "message": "✅ 썸네일 다운로드가 완료되었습니다!" },
+  "processing": { "message": "⏳ 처리 중..." },
+  "error_prefix": { "message": "❌ 오류: " },
+  "error_unknown": { "message": "알 수 없는 오류" }
+}

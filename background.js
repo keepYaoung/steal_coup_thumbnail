@@ -1,3 +1,6 @@
+// 아이콘 클릭 시 사이드패널 열기
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+
 // Google Sheets API 관련 변수
 // let accessToken = null;
 // let currentTab = null;
@@ -10,7 +13,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   // downloadThumbnails 액션 추가
   if (request.action === 'downloadThumbnails') {
-    handleDownloadThumbnails(request.links, request.fileType, sendResponse);
+    handleDownloadThumbnails(request.links, sendResponse);
     return true;
   }
 });
@@ -134,25 +137,6 @@ function sendProgress(message, percent) {
   });
 }
 
-// 200x200px 중앙 크롭 함수
-async function cropImageToSquare200(imageUrl) {
-  const blob = await fetch(imageUrl).then(r => r.blob());
-  const img = await createImageBitmap(blob);
-  const canvas = new OffscreenCanvas(200, 200);
-  const ctx = canvas.getContext('2d');
-  let sx = 0, sy = 0, sw = img.width, sh = img.height;
-  if (img.width > img.height) {
-    sx = (img.width - img.height) / 2;
-    sw = img.height;
-  } else if (img.height > img.width) {
-    sy = (img.height - img.width) / 2;
-    sh = img.width;
-  }
-  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, 200, 200);
-  const croppedBlob = await canvas.convertToBlob({ type: 'image/jpeg', quality: 0.92 });
-  return URL.createObjectURL(croppedBlob);
-}
-
 // 날짜 기반 폴더명 생성 (예: 26-03-31-coupang-thumbnail)
 function getDownloadFolder() {
   const now = new Date();
@@ -163,7 +147,7 @@ function getDownloadFolder() {
 }
 
 // downloadThumbnails 핸들러
-async function handleDownloadThumbnails(links, fileType, sendResponse) {
+async function handleDownloadThumbnails(links, sendResponse) {
   try {
     const folderName = getDownloadFolder();
     let fileIndex = 1;
@@ -178,34 +162,17 @@ async function handleDownloadThumbnails(links, fileType, sendResponse) {
           thumbnailUrl: thumbnailUrl
         });
         if (thumbnailUrl && !thumbnailUrl.startsWith('ERROR')) {
-          let filename = '';
-          if (fileType === 'crop') {
-            filename = `${folderName}/crawl_img_${fileIndex}_crop.jpg`;
-            fileIndex++;
-            const croppedUrl = await cropImageToSquare200(thumbnailUrl);
-            chrome.downloads.download({
-              url: croppedUrl,
-              filename: filename,
-              saveAs: false
-            }, () => {
-              URL.revokeObjectURL(croppedUrl);
-              if (chrome.runtime.lastError) {
-                results.push({ index: i, link: link, error: chrome.runtime.lastError.message });
-              }
-            });
-          } else {
-            filename = `${folderName}/crawl_img_${fileIndex}.jpg`;
-            fileIndex++;
-            chrome.downloads.download({
-              url: thumbnailUrl,
-              filename: filename,
-              saveAs: false
-            }, () => {
-              if (chrome.runtime.lastError) {
-                results.push({ index: i, link: link, error: chrome.runtime.lastError.message });
-              }
-            });
-          }
+          const filename = `${folderName}/crawl_img_${fileIndex}.jpg`;
+          fileIndex++;
+          chrome.downloads.download({
+            url: thumbnailUrl,
+            filename: filename,
+            saveAs: false
+          }, () => {
+            if (chrome.runtime.lastError) {
+              results.push({ index: i, link: link, error: chrome.runtime.lastError.message });
+            }
+          });
         }
       } catch (error) {
         results.push({

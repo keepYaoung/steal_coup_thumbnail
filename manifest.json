@@ -1,18 +1,21 @@
 {
   "manifest_version": 3,
   "name": "쿠팡 썸네일 퍼가개 : Coupang Thumbnail Extractor",
-  "version": "25.07.03",
+  "default_locale": "ko",
+  "version": "26.03.31",
   "description": "쿠팡 링크에서 썸네일을 추출해줍니다.",
   "permissions": [
     "downloads",
-    "storage"
+    "storage",
+    "sidePanel"
   ],
   "host_permissions": [
     "https://www.coupang.com/*",
     "https://www.google-analytics.com/*"
   ],
-  "action": {
-    "default_popup": "popup.html"
+  "action": {},
+  "side_panel": {
+    "default_path": "popup.html"
   },
   "background": {
     "service_worker": "background.js"

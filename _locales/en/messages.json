@@ -1,0 +1,17 @@
+{
+  "app_name": { "message": "Coupang Thumbnail Extractor" },
+  "input_placeholder": { "message": "Copy & Paste the all links to here" },
+  "guide_title": { "message": "Guide" },
+  "guide_item1": { "message": "You can paste multiple Coupang links at once." },
+  "guide_item2": { "message": "Files are saved in a date-based folder in Downloads.\n(e.g. 26-03-31-coupang-thumbnail)" },
+  "guide_item3": { "message": "Buy me a coffee ☕️\n3333344816991 KakaoBank" },
+  "ai_btn_text": { "message": "AI Generate 5-angle product images" },
+  "download_btn": { "message": "Download Thumbnails" },
+  "toast_ai": { "message": "This feature is coming soon. Get notified →" },
+  "error_no_data": { "message": "❌ Please paste link data." },
+  "error_no_links": { "message": "❌ No valid links found." },
+  "success_download": { "message": "✅ Thumbnails downloaded successfully!" },
+  "processing": { "message": "⏳ Processing..." },
+  "error_prefix": { "message": "❌ Error: " },
+  "error_unknown": { "message": "Unknown error" }
+}

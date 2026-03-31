@@ -1,0 +1,17 @@
+{
+  "app_name": { "message": "酷澎缩略图提取器" },
+  "input_placeholder": { "message": "请将酷澎链接复制粘贴到此处" },
+  "guide_title": { "message": "使用指南" },
+  "guide_item1": { "message": "可以粘贴多个酷澎链接。" },
+  "guide_item2": { "message": "将按日期保存到Download文件夹。\n(例: 26-03-31-coupang-thumbnail)" },
+  "guide_item3": { "message": "请我喝咖啡 ☕️\n3333344816991 카카오뱅크" },
+  "ai_btn_text": { "message": "AI 生成商品5角度图像" },
+  "download_btn": { "message": "下载缩略图" },
+  "toast_ai": { "message": "该功能正在准备中。接收上线通知 →" },
+  "error_no_data": { "message": "❌ 请粘贴链接数据。" },
+  "error_no_links": { "message": "❌ 没有有效的链接。" },
+  "success_download": { "message": "✅ 缩略图下载完成！" },
+  "processing": { "message": "⏳ 处理中..." },
+  "error_prefix": { "message": "❌ 错误：" },
+  "error_unknown": { "message": "未知错误" }
+}
