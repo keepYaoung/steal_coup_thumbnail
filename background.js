@@ -153,9 +153,19 @@ async function cropImageToSquare200(imageUrl) {
   return URL.createObjectURL(croppedBlob);
 }
 
+// 날짜 기반 폴더명 생성 (예: 26-03-31-coupang-thumbnail)
+function getDownloadFolder() {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(2);
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}-coupang-thumbnail`;
+}
+
 // downloadThumbnails 핸들러
 async function handleDownloadThumbnails(links, fileType, sendResponse) {
   try {
+    const folderName = getDownloadFolder();
     let fileIndex = 1;
     const results = [];
     for (let i = 0; i < links.length; i++) {
@@ -170,7 +180,7 @@ async function handleDownloadThumbnails(links, fileType, sendResponse) {
         if (thumbnailUrl && !thumbnailUrl.startsWith('ERROR')) {
           let filename = '';
           if (fileType === 'crop') {
-            filename = `000 Extract Coupang thumnail/crawl_img_${fileIndex}_crop.jpg`;
+            filename = `${folderName}/crawl_img_${fileIndex}_crop.jpg`;
             fileIndex++;
             const croppedUrl = await cropImageToSquare200(thumbnailUrl);
             chrome.downloads.download({
@@ -184,7 +194,7 @@ async function handleDownloadThumbnails(links, fileType, sendResponse) {
               }
             });
           } else {
-            filename = `000 Extract Coupang thumnail/crawl_img_${fileIndex}.jpg`;
+            filename = `${folderName}/crawl_img_${fileIndex}.jpg`;
             fileIndex++;
             chrome.downloads.download({
               url: thumbnailUrl,
