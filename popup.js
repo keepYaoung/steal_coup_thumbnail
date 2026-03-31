@@ -2,9 +2,26 @@ document.addEventListener('DOMContentLoaded', function() {
   const downloadBtn = document.getElementById('downloadBtn');
   const columnData = document.getElementById('columnData');
   const resultDiv = document.getElementById('result');
+  const toast = document.getElementById('toast');
 
   // GA4: 팝업 열림 이벤트
   sendGA4Event('popup_open');
+
+  // 토스트 표시
+  let toastTimer = null;
+  function showToast(html, duration = 4000) {
+    toast.innerHTML = html;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), duration);
+  }
+
+  // AI 기능 버튼
+  const aiFeatureBtn = document.getElementById('aiFeatureBtn');
+  aiFeatureBtn.addEventListener('click', function() {
+    sendGA4Event('ai_feature_click', { feature: 'five_angle_image' });
+    showToast('준비 중인 기능입니다. 출시 알림 받기 →');
+  });
 
   downloadBtn.addEventListener('click', async function() {
     const rawText = columnData.value.trim();
@@ -100,4 +117,4 @@ document.addEventListener('DOMContentLoaded', function() {
       window.close();
     });
   }
-}); 
+});

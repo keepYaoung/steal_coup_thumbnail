@@ -86,19 +86,26 @@ async function readSpreadsheetLinks(spreadsheetId, sheetName, linkColumn) {
 // 썸네일 추출 함수
 async function extractThumbnailFromUrl(url) {
   return new Promise((resolve, reject) => {
-    chrome.tabs.create({ url: url, active: false }, (tab) => {
+    chrome.tabs.create({ url: url, active: false }, (createdTab) => {
+      const timeoutId = setTimeout(() => {
+        chrome.tabs.onUpdated.removeListener(listener);
+        chrome.tabs.remove(createdTab.id, () => {});
+        reject(new Error('페이지 로딩 시간 초과'));
+      }, 30000);
+
       // 페이지 로딩 완료 대기
-      chrome.tabs.onUpdated.addListener(function listener(tabId, changeInfo, tab) {
-        if (tabId === tab.id && changeInfo.status === 'complete') {
+      function listener(tabId, changeInfo) {
+        if (tabId === createdTab.id && changeInfo.status === 'complete') {
+          clearTimeout(timeoutId);
           chrome.tabs.onUpdated.removeListener(listener);
-          chrome.tabs.sendMessage(tab.id, { action: 'extractThumbnail' }, (response) => {
+          chrome.tabs.sendMessage(createdTab.id, { action: 'extractThumbnail' }, (response) => {
             if (chrome.runtime.lastError) {
-              chrome.tabs.remove(tab.id);
+              chrome.tabs.remove(createdTab.id);
               reject(new Error(chrome.runtime.lastError.message));
               return;
             }
             const thumbnailUrl = response ? response.thumbnailUrl : null;
-            chrome.tabs.remove(tab.id);
+            chrome.tabs.remove(createdTab.id);
             if (thumbnailUrl) {
               resolve(thumbnailUrl);
             } else {
@@ -106,7 +113,8 @@ async function extractThumbnailFromUrl(url) {
             }
           });
         }
-      });
+      }
+      chrome.tabs.onUpdated.addListener(listener);
     });
   });
 }
@@ -169,6 +177,11 @@ async function handleDownloadThumbnails(links, fileType, sendResponse) {
               url: croppedUrl,
               filename: filename,
               saveAs: false
+            }, () => {
+              URL.revokeObjectURL(croppedUrl);
+              if (chrome.runtime.lastError) {
+                results.push({ index: i, link: link, error: chrome.runtime.lastError.message });
+              }
             });
           } else {
             filename = `000 Extract Coupang thumnail/crawl_img_${fileIndex}.jpg`;
@@ -177,6 +190,10 @@ async function handleDownloadThumbnails(links, fileType, sendResponse) {
               url: thumbnailUrl,
               filename: filename,
               saveAs: false
+            }, () => {
+              if (chrome.runtime.lastError) {
+                results.push({ index: i, link: link, error: chrome.runtime.lastError.message });
+              }
             });
           }
         }

@@ -279,4 +279,83 @@
 }
 .custom-radio-option#cropOption:hover {
   outline-color: initial;
-} 
+}
+
+/* AI 기능 버튼 */
+.ai-feature-btn {
+  align-self: stretch;
+  height: 44px;
+  padding: 0 16px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.15s;
+}
+.ai-feature-btn:hover {
+  opacity: 0.9;
+}
+.ai-feature-btn:active {
+  opacity: 0.8;
+}
+.ai-feature-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+.ai-feature-text {
+  flex: 1;
+  color: #fff;
+  font-size: 13px;
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  text-align: left;
+}
+.beta-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 10px;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+}
+
+/* 토스트 */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: #1e293b;
+  color: #fff;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 999;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.toast a {
+  color: #818cf8;
+  text-decoration: none;
+  margin-left: 4px;
+  font-weight: 600;
+}
+.toast a:hover {
+  text-decoration: underline;
+}
