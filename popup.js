@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const columnData = document.getElementById('columnData');
   const resultDiv = document.getElementById('result');
 
+  // GA4: 팝업 열림 이벤트
+  sendGA4Event('popup_open');
+
   downloadBtn.addEventListener('click', async function() {
     const rawText = columnData.value.trim();
     if (!rawText) {
@@ -15,6 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
       showResult('❌ 유효한 링크가 없습니다.', 'error');
       return;
     }
+
+    // GA4: 다운로드 클릭 이벤트
+    sendGA4Event('download_click', {
+      link_count: String(links.length),
+      file_type: fileType
+    });
 
     downloadBtn.disabled = true;
     downloadBtn.textContent = '⏳ 처리 중...';
@@ -29,11 +38,24 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       if (response && response.success) {
         showResult('✅ 썸네일 다운로드가 완료되었습니다!', 'success');
+        // GA4: 다운로드 완료 이벤트
+        sendGA4Event('download_complete', {
+          link_count: String(links.length),
+          success_count: String(response.results ? response.results.filter(r => !r.thumbnailUrl.startsWith('ERROR')).length : 0)
+        });
       } else {
         showResult('❌ 오류: ' + (response && response.error ? response.error : '알 수 없는 오류'), 'error');
+        // GA4: 다운로드 에러 이벤트
+        sendGA4Event('download_error', {
+          error_message: response && response.error ? response.error : 'unknown'
+        });
       }
     } catch (error) {
       showResult('❌ 오류: ' + error.message, 'error');
+      // GA4: 다운로드 에러 이벤트
+      sendGA4Event('download_error', {
+        error_message: error.message
+      });
     } finally {
       downloadBtn.disabled = false;
       downloadBtn.textContent = '썸네일 다운로드';
@@ -56,6 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
     fileType = 'origin';
     originRadio.classList.add('selected');
     cropRadio.classList.remove('selected');
+    // GA4: 라디오 선택 이벤트
+    sendGA4Event('radio_select', { file_type: 'origin' });
   });
   cropOption.addEventListener('click', function() {
     alert('크롭 파일로 받기 기능은 현재 일시 중지되었습니다.');
@@ -63,12 +87,16 @@ document.addEventListener('DOMContentLoaded', function() {
     cropRadio.classList.remove('selected');
     originRadio.classList.add('selected');
     fileType = 'origin';
+    // GA4: 라디오 선택 이벤트 (크롭 시도)
+    sendGA4Event('radio_select', { file_type: 'crop' });
   });
 
   // 닫기 버튼 이벤트
   const closeBtn = document.getElementById('closeBtn');
   if (closeBtn) {
     closeBtn.addEventListener('click', function() {
+      // GA4: 닫기 버튼 이벤트
+      sendGA4Event('close_click');
       window.close();
     });
   }

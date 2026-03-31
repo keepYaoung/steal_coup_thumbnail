@@ -4,10 +4,12 @@
   "version": "25.07.03",
   "description": "쿠팡 링크에서 썸네일을 추출해줍니다.",
   "permissions": [
-    "downloads"
+    "downloads",
+    "storage"
   ],
   "host_permissions": [
-    "https://www.coupang.com/*"
+    "https://www.coupang.com/*",
+    "https://www.google-analytics.com/*"
   ],
   "action": {
     "default_popup": "popup.html"
